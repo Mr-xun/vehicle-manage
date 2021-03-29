@@ -1,4 +1,4 @@
-export default function(state = [], action) {
+export default function (state = [], action) {
     let { type, payload } = action;
     switch (type) {
         case "ADD_TODO":

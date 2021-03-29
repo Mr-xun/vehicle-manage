@@ -4,6 +4,8 @@ import zhCN from "antd/es/locale/zh_CN";
 import { ConfigProvider } from "antd";
 import ContentWrap from "./components/ContentWrap";
 import Index from "./pages/Index";
+import Login from "./pages/Login";
+
 import {
     BrowserRouter as Router,
     Route,
@@ -17,6 +19,8 @@ const App = () => {
                 <Router>
                     <Switch>
                         <Route exact path="/index" component={Index}></Route>
+                        <Route exact path="/login" component={Login}></Route>
+
                         <Redirect exact path="/" to="/index"></Redirect>
                         <Route component={ContentWrap} />
                     </Switch>
