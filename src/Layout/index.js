@@ -6,12 +6,12 @@ import {
     Switch
 } from "react-router-dom";
 import "./index.scss";
-import { getRootPath } from "../../utils";
-import Home from "../../pages/Home";
-import HistoryData from "../../pages/HistoryData";
-import Compare from "../../pages/Compare";
-import AlarmVal from "../../pages/AlarmVal";
-import NotFound from "../../pages/NotFound";
+import { getRootPath } from "../utils";
+import User from "../pages/User";
+import Service from "../pages/Service";
+import Bicycle from "../pages/Bicycle";
+import Student from "../pages/Student";
+import NotFound from "../pages/NotFound";
 
 import { Layout, Menu, Icon } from "antd";
 const { Header, Sider, Content } = Layout;
@@ -33,7 +33,7 @@ export default class ContentWrap extends Component {
             <Layout className="wrapper">
                 <Header>
                     <div className="head-logo"></div>
-                    <h1 className="head-title">矿井水害监测数据分析与可视化</h1>
+                    <h1 className="head-title"></h1>
                 </Header>
                 <Layout>
                     <Router>
@@ -43,28 +43,28 @@ export default class ContentWrap extends Component {
                                 defaultSelectedKeys={[defaultKeys]}
                                 mode="inline"
                             >
-                                <Menu.Item key="/home">
-                                    <NavLink exact to="/home">
-                                        <Icon type="bank" />
-                                        首页
+                                <Menu.Item key="/user">
+                                    <NavLink exact to="/user">
+                                        <Icon type="user" />
+                                        用户管理
                                     </NavLink>
                                 </Menu.Item>
-                                <Menu.Item key="/history">
-                                    <NavLink exact to="/history">
-                                        <Icon type="unordered-list" />
-                                        历史&更正
+                                <Menu.Item key="/bicycle">
+                                    <NavLink exact to="/bicycle">
+                                        <Icon type="car" />
+                                        单车管理
                                     </NavLink>
                                 </Menu.Item>
-                                <Menu.Item key="/compare">
-                                    <NavLink exact to="/compare">
-                                        <Icon type="column-width" />
-                                        对比
+                                <Menu.Item key="/servcie">
+                                    <NavLink exact to="/servcie">
+                                        <Icon type="gold" />
+                                        服务点管理
                                     </NavLink>
                                 </Menu.Item>
-                                <Menu.Item key="/alarmVal">
-                                    <NavLink exact to="/alarmVal">
-                                        <Icon type="bell" />
-                                        预警
+                                <Menu.Item key="/student">
+                                    <NavLink exact to="/student">
+                                        <Icon type="contacts" />
+                                        学生管理
                                     </NavLink>
                                 </Menu.Item>
                             </Menu>
@@ -73,28 +73,23 @@ export default class ContentWrap extends Component {
                             <Switch>
                                 <Route
                                     exact
-                                    path="/water/index.html"
-                                    component={Home}
+                                    path="/user"
+                                    component={User}
                                 ></Route>
                                 <Route
                                     exact
-                                    path="/home"
-                                    component={Home}
+                                    path="/bicycle"
+                                    component={Bicycle}
                                 ></Route>
                                 <Route
                                     exact
-                                    path="/compare"
-                                    component={Compare}
+                                    path="/servcie"
+                                    component={Service}
                                 ></Route>
                                 <Route
                                     exact
-                                    path="/history"
-                                    component={HistoryData}
-                                ></Route>
-                                <Route
-                                    exact
-                                    path="/alarmVal"
-                                    component={AlarmVal}
+                                    path="/student"
+                                    component={Student}
                                 ></Route>
                                 <Route component={NotFound} />
                             </Switch>

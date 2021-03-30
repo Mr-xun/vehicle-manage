@@ -2,7 +2,7 @@ import React from "react";
 import "./App.scss";
 import zhCN from "antd/es/locale/zh_CN";
 import { ConfigProvider } from "antd";
-import ContentWrap from "./components/ContentWrap";
+import Layout from "./Layout";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 
@@ -22,7 +22,7 @@ const App = () => {
                         <Route exact path="/login" component={Login}></Route>
 
                         <Redirect exact path="/" to="/index"></Redirect>
-                        <Route component={ContentWrap} />
+                        <Route component={Layout} />
                     </Switch>
                 </Router>
             </ConfigProvider>
