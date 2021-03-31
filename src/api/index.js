@@ -1,11 +1,10 @@
 import request from "./http";
-const ORIGIN_PATH = "http://62.234.138.175:8000"; //远端
-const LOCAL_PATH = "http://localhost:8000"; //本地
+const ORIGIN_PATH = "http://39.106.109.80:8000"; //远端
 let _CURRENT_PATH_ = (function() {
     //选择接口
     let currentHost = window.location.host;
     switch (currentHost) {
-        case "62.234.138.175:8000":
+        case "39.106.109.80:8000":
             return ORIGIN_PATH;
         default:
             return ORIGIN_PATH;

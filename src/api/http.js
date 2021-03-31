@@ -1,11 +1,15 @@
 import axios from "axios";
-axios.defaults.withCredentials = true; //携带cookie
-axios.defaults.headers.post["Content-Type"] =
-    "application/x-www-form-urlencoded; charset=utf-8";
+import { getToken, getRefreshToken, getExpireTime } from '@/utils/auth';
+
+const baseURL = 'http://39.106.109.80:8000'
 let instance = axios.create({
-    withCredentials: true,
+    baseURL,
+    withCredentials: true,//携带cookie
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+    },
     transformRequest: [
-        function(data) {
+        function (data) {
             // 请求参数的格式
             let newData = "";
             for (let k in data) {
@@ -21,6 +25,10 @@ let instance = axios.create({
 });
 instance.interceptors.request.use(
     config => {
+        if (getToken()) {
+            config.headers['Authorization'] =
+                'bearer ' + getToken();
+        }
         return config;
     },
     error => {
