@@ -1,4 +1,4 @@
-import db from '@/utils/localstorage';
+import db from './localstorage';
 
 export function getToken() {
     return db.get('ACCESS_TOKEN', '');

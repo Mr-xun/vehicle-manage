@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getToken, getRefreshToken, getExpireTime } from '@/utils/auth';
+import { getToken } from '../utils/auth';
 
 const baseURL = 'http://39.106.109.80:8000'
 let instance = axios.create({
