@@ -1,7 +1,7 @@
 import axios from "axios";
 import { getToken } from '../utils/auth';
 
-const baseURL = 'http://39.106.109.80:8000'
+const baseURL = '/api'
 let instance = axios.create({
     baseURL,
     withCredentials: true,//携带cookie

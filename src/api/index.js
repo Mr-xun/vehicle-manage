@@ -1,16 +1,24 @@
 import request from "./http";
-const ORIGIN_PATH = "http://39.106.109.80:8000"; //远端
+const ORIGIN_PATH = "http://39.106.109.80:8080"; //远端
 let _CURRENT_PATH_ = (function() {
     //选择接口
     let currentHost = window.location.host;
     switch (currentHost) {
-        case "39.106.109.80:8000":
+        case "39.106.109.80:8080":
             return ORIGIN_PATH;
         default:
             return ORIGIN_PATH;
     }
 })();
 export default {
+    getVerifyCaptch(){
+        //获取登录验证码
+        return request.get(_CURRENT_PATH_ + "/car/res/user/verify/login");
+    },
+    userLogin(params){
+        //获取登录验证码
+        return request.post(_CURRENT_PATH_ + "/car/user/login",params);
+    },
     getDynamicWaterInfo() {
         //获取动态水质信息
         return request.get(_CURRENT_PATH_ + "/water/getDynamicWaterInfo");
