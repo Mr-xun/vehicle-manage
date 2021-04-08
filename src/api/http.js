@@ -1,7 +1,11 @@
 import axios from "axios";
-import { getToken } from '../utils/auth';
+import { getTokenType, getToken } from '../utils/auth';
+import {
+    message
+} from 'antd';
+import db from '../utils/localstorage'
 
-const baseURL = '/api'
+const baseURL = ''
 let instance = axios.create({
     baseURL,
     withCredentials: true,//携带cookie
@@ -27,7 +31,7 @@ instance.interceptors.request.use(
     config => {
         if (getToken()) {
             config.headers['Authorization'] =
-                'bearer ' + getToken();
+                getTokenType() + getToken();
         }
         return config;
     },
@@ -37,10 +41,34 @@ instance.interceptors.request.use(
 );
 // http响应拦截器
 instance.interceptors.response.use(
-    data => {
-        return data;
+    response => {
+        return response;
     },
     error => {
+        if (error.response) {
+            const errorMessage =
+                error.response.data === null
+                    ? '系统内部异常，请联系网站管理员'
+                    : error.response.data.message;
+            switch (error.response.status) {
+                case 404:
+                    message.error('很抱歉，资源未找到');
+                    break;
+                case 403:
+                    message.error('很抱歉，您暂无该操作权限');
+                    break;
+                case 401:
+                    message.error('很抱歉，认证已失效，请重新登录');
+                    db.clear();
+                    break;
+                case 500:
+                    message.error('服务异常');
+                    break;
+                default:
+                    message.error(errorMessage);
+                    break;
+            }
+        }
         return Promise.reject(error);
     }
 );

@@ -7,7 +7,7 @@ import {
 import "./index.scss";
 import api from "../../api/index";
 import axios from 'axios';
-
+import db from '../../utils/localstorage'
 function hasErrors(fieldsError) {
     return Object.keys(fieldsError).some(field => fieldsError[field]);
 }
@@ -32,7 +32,15 @@ class Login extends Component {
                     ...values
                 };
                 api.userLogin(params).then(res => {
-                    console.log(res, 888)
+                    let { code, data, msg } = res.data;
+                    if (code === 200) {
+                        this.props.history.push("/user")
+                        message.success('登录成功')
+                        db.save('ACCESS_TOKEN', data.accessToken);
+                        db.save('TOKEN_TYPE', data.tokenType);
+                    } else {
+                        message.error(msg)
+                    }
                 });
             }
         });
@@ -40,7 +48,7 @@ class Login extends Component {
     getCaptchImg() {
         axios({
             method: 'GET',
-            url: `http://39.106.109.80:8080/car/res/user/verify/login`,
+            url: `/api/car/res/user/verify/login`,
             responseType: 'arraybuffer'
         })
             .then((res) => {

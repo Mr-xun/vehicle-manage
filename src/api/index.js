@@ -1,5 +1,5 @@
 import request from "./http";
-const ORIGIN_PATH = "http://39.106.109.80:8080"; //远端
+const ORIGIN_PATH = "/api"; //远端
 let _CURRENT_PATH_ = (function() {
     //选择接口
     let currentHost = window.location.host;
@@ -16,9 +16,26 @@ export default {
         return request.get(_CURRENT_PATH_ + "/car/res/user/verify/login");
     },
     userLogin(params){
-        //获取登录验证码
+        //用户登录
         return request.post(_CURRENT_PATH_ + "/car/user/login",params);
     },
+    getUserList(params){
+        //用户管理-用户列表
+        return request.post(_CURRENT_PATH_ + "/car/user/page/list",params);
+    },
+    addUser(params){
+        //用户管理-新增用户
+        return request.post(_CURRENT_PATH_ + "/car/user/register",params);
+    },
+    updateUser(params){
+        //用户管理-修改用户
+        return request.post(_CURRENT_PATH_ + "/car/user/modify",params);
+    },
+    deleteUser(params){
+        //用户管理-删除用户
+        return request.post(_CURRENT_PATH_ + "/car/user/delete",params);
+    },
+    
     getDynamicWaterInfo() {
         //获取动态水质信息
         return request.get(_CURRENT_PATH_ + "/water/getDynamicWaterInfo");

@@ -4,6 +4,10 @@ export function getToken() {
     return db.get('ACCESS_TOKEN', '');
 }
 
+export function getTokenType() {
+    return db.get('TOKEN_TYPE', '');
+}
+
 export function getRefreshToken() {
     return db.get('REFRESH_TOKEN', '');
 }

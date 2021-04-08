@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Modal, message, Form, Input } from "antd";
+import { Modal, message, Form, Input, Radio } from "antd";
 import "./index.scss";
 import api from "../../../../api/index";
 class EditUser extends Component {
@@ -12,30 +12,41 @@ class EditUser extends Component {
         this.handleCancel = this.handleCancel.bind(this);
     }
     handleOk = e => {
-        let { form, type, getTableData } = this.props;
-        form.validateFields((err, fieldsValue) => {
+        let { form, type, onSuccess, user } = this.props;
+        form.validateFields((err, values) => {
             if (err) return;
             let params = {
-                [type]: fieldsValue.inputVal,
-                [type + "_flag"]: fieldsValue.radioType
+                ...values
             };
-            api.updateAlarmValue(params).then(res => {
-                if (res.data.message === "success") {
-                    message.success("修改成功");
-                    getTableData();
+            let url = type === 'add' ? 'addUser' : 'updateUser'
+            if (type === 'edit') {
+                params.userId = user.userId
+            }
+            api[url](params).then(res => {
+                let { code, msg } = res.data
+                if (code === 200) {
+                    onSuccess();
+                    this.handleCancel();
+                    message.success(msg);
                 } else {
-                    message.warning(res.data.message);
+                    message.warning(msg);
                 }
-                this.handleCancel();
             });
         });
     };
+    isDisable() {
+        let { type } = this.props;
 
+        return type === 'edit' ? true : false
+    }
     handleCancel() {
         this.props.onClose();
     }
     render() {
-        let { visible, title } = this.props;
+        let { visible, type, title, user: { account = '', username = '', password = '', cellphone = '', roleId = "" } } = this.props;
+        if (type === 'edit') {
+            password = '******'
+        }
         const formItemLayout = {
             labelCol: { span: 4 },
             wrapperCol: { span: 14 }
@@ -51,18 +62,42 @@ class EditUser extends Component {
                 >
                     <div>
                         <Form layout="horizontal">
-                            <Form.Item label="名称" {...formItemLayout}>
-                                {getFieldDecorator("name", {
+                            <Form.Item label="账号" {...formItemLayout}>
+                                {getFieldDecorator("account", {
+                                    initialValue: account,
                                     rules: [
                                         {
                                             required: true,
-                                            message: "请输入名称!"
+                                            message: "请输入账号!"
                                         }
                                     ]
-                                })(<Input placeholder='名称' />)}
+                                })(<Input placeholder='账号' disabled={this.isDisable()} />)}
+                            </Form.Item>
+                            <Form.Item label="用户名" {...formItemLayout}>
+                                {getFieldDecorator("username", {
+                                    initialValue: username,
+                                    rules: [
+                                        {
+                                            required: true,
+                                            message: "请输入用户名!"
+                                        }
+                                    ]
+                                })(<Input placeholder='用户名' />)}
+                            </Form.Item>
+                            <Form.Item label="密码" {...formItemLayout}>
+                                {getFieldDecorator("password", {
+                                    initialValue: password,
+                                    rules: [
+                                        {
+                                            required: true,
+                                            message: "请输入密码!"
+                                        }
+                                    ]
+                                })(<Input type='password' placeholder='密码' disabled={this.isDisable()} />)}
                             </Form.Item>
                             <Form.Item label="电话" {...formItemLayout}>
-                                {getFieldDecorator("tel", {
+                                {getFieldDecorator("cellphone", {
+                                    initialValue: cellphone,
                                     rules: [
                                         {
                                             required: true,
@@ -71,8 +106,19 @@ class EditUser extends Component {
                                     ]
                                 })(<Input placeholder='电话' />)}
                             </Form.Item>
-                            <Form.Item label="备注" {...formItemLayout}>
-                                <Input placeholder='备注' />
+                            <Form.Item label="角色" {...formItemLayout}>
+                                {getFieldDecorator("roleId", {
+                                    initialValue: roleId,
+                                    rules: [
+                                        {
+                                            required: true,
+                                            message: "请选择角色!"
+                                        }
+                                    ]
+                                })(<Radio.Group >
+                                    <Radio value={1}>管理员</Radio>
+                                    <Radio value={2}>普通用户</Radio>
+                                </Radio.Group>)}
                             </Form.Item>
                         </Form>
                     </div>
