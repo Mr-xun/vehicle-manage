@@ -1,6 +1,6 @@
 import request from "./http";
 // const ORIGIN_PATH = "/api"; //远端
-// let _CURRENT_PATH_ = (function() {
+// let _CURRENT_PATH_ = (function () {
 //     //选择接口
 //     let currentHost = window.location.host;
 //     switch (currentHost) {
@@ -11,48 +11,48 @@ import request from "./http";
 //     }
 // })();
 export default {
-    getVerifyCaptch(){
+    getVerifyCaptch() {
         //获取登录验证码
         return request.get("/car/res/user/verify/login");
     },
-    userLogin(params){
+    userLogin(params) {
         //用户登录
-        return request.post("/car/user/login",params);
+        return request.post("/car/user/login", params);
     },
-    userLogout(params){
+    userLogout(params) {
         //用户退出
         return request.get("/car/user/logout");
     },
-    getUserList(params){
+    getUserList(params) {
         //用户管理-用户列表
-        return request.post("/car/user/page/list",params);
+        return request.post("/car/user/page/list", params);
     },
-    addUser(params){
+    addUser(params) {
         //用户管理-新增用户
-        return request.post("/car/user/register",params);
+        return request.post("/car/user/register", params);
     },
-    updateUser(params){
+    updateUser(params) {
         //用户管理-修改用户
-        return request.post("/car/user/modify",params);
+        return request.post("/car/user/modify", params);
     },
-    deleteUser(params){
+    deleteUser(params) {
         //用户管理-删除用户
-        return request.post("/car/user/delete",params);
+        return request.post("/car/user/delete", params);
     },
-    getBicycleList(params){
+    getBicycleList(params) {
         //车辆管理-车辆列表
-        return request.post("/car/machine/list/get",params);
+        return request.post("/car/machine/list/get", params);
     },
-    addBicycle(params){
+    addBicycle(params) {
         //车辆管理-新增车辆
-        return request.post("/car/machine/create",params);
+        return request.post("/car/machine/create", params);
     },
-    updateBicycle(params){
+    updateBicycle(params) {
         //车辆管理-修改车辆
-        return request.post("/car/machine/modify",params);
+        return request.post("/car/machine/modify", params);
     },
-    deleteBicycle(params){
+    deleteBicycle(params) {
         //车辆管理-删除车辆
-        return request.post("/car/machine/delete",params);
+        return request.post("/car/machine/delete", params);
     },
 };

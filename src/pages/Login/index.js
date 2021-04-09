@@ -47,9 +47,10 @@ class Login extends Component {
         });
     };
     getCaptchImg() {
+        let baseURL = process.env.NODE_ENV === 'development' ? '/api' : 'http://39.106.109.80:8080'
         axios({
             method: 'GET',
-            url: `http://39.106.109.80:8080/car/res/user/verify/login`,
+            url: `${baseURL}/car/res/user/verify/login`,
             responseType: 'arraybuffer'
         })
             .then((res) => {

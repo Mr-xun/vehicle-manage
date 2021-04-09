@@ -32,12 +32,19 @@ export default class ContentWrap extends Component {
             defaultKeys: getRootPath()
         });
     }
+    componentDidMount() {
+        let { username = '', roleName = '', cellphone = '' } = db.get('USER')
+        this.setState({
+            username,
+            roleName,
+            cellphone,
+        });
+    }
     logout() {
         api.userLogout().then(res => {
             let { code, msg } = res.data;
             if (code === 200) {
                 this.props.history.push("/login")
-                message.success('退出成功')
                 db.clear();
             } else {
                 message.error(msg)
@@ -45,8 +52,9 @@ export default class ContentWrap extends Component {
         });
     }
     render() {
-        let { defaultKeys } = this.state;
-        let { username = '', roleName = '', cellphone = '' } = db.get('USER')
+        let { defaultKeys, username,
+            roleName,
+            cellphone } = this.state;
         const menu = (
             <Menu className='user-info'>
                 <Menu.Item >

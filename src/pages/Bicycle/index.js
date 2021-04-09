@@ -139,7 +139,7 @@ export default class User extends Component {
                             新增
                         </Button>
                     </div>
-                    <Table loading={loading} pagination={pagination} dataSource={tableData} onChange={this.handleTableChange} rowKey={record => record.userId}>
+                    <Table loading={loading} pagination={pagination} dataSource={tableData} onChange={this.handleTableChange} rowKey={record => record.machineId}>
                         <Column
                             title="图片"
                             dataIndex="picture"
