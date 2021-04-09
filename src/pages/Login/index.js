@@ -49,7 +49,7 @@ class Login extends Component {
     getCaptchImg() {
         axios({
             method: 'GET',
-            url: `/api/car/res/user/verify/login`,
+            url: `http://39.106.109.80:8080/car/res/user/verify/login`,
             responseType: 'arraybuffer'
         })
             .then((res) => {

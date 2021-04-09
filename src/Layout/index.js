@@ -25,6 +25,7 @@ export default class ContentWrap extends Component {
         this.state = {
             defaultKeys: "/history"
         };
+        this.logout = this.logout.bind(this)
     }
     componentWillMount() {
         this.setState({

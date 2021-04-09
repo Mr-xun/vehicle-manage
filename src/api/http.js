@@ -4,8 +4,8 @@ import {
     message
 } from 'antd';
 import db from '../utils/localstorage'
-
-const baseURL = ''
+const { patnanme, origin } = window.location
+const baseURL = 'http://39.106.109.80:8080'
 let instance = axios.create({
     baseURL,
     withCredentials: true,//携带cookie
@@ -31,7 +31,12 @@ instance.interceptors.request.use(
     config => {
         if (getToken()) {
             config.headers['Authorization'] =
-                getTokenType() +' '+ getToken();
+                getTokenType() + ' ' + getToken();
+        } else {
+            if (patnanme !== '/login') {
+                message.error('很抱歉，认证已失效，请重新登录');
+                window.location.href = origin + '/login'
+            }
         }
         return config;
     },
@@ -60,6 +65,8 @@ instance.interceptors.response.use(
                 case 401:
                     message.error('很抱歉，认证已失效，请重新登录');
                     db.clear();
+                    let origin = window.location.href
+                    window.location.href = origin + '/login'
                     break;
                 case 500:
                     message.error('服务异常');
