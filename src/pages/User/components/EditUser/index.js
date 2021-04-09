@@ -28,6 +28,7 @@ class EditUser extends Component {
                     onSuccess();
                     this.handleCancel();
                     message.success(msg);
+                    form.resetFields()
                 } else {
                     message.warning(msg);
                 }
@@ -36,11 +37,12 @@ class EditUser extends Component {
     };
     isDisable() {
         let { type } = this.props;
-
         return type === 'edit' ? true : false
     }
     handleCancel() {
+        let { form } = this.props;
         this.props.onClose();
+        form.resetFields()
     }
     render() {
         let { visible, type, title, user: { account = '', username = '', password = '', cellphone = '', roleId = "" } } = this.props;
@@ -61,7 +63,7 @@ class EditUser extends Component {
                     onCancel={this.handleCancel}
                 >
                     <div>
-                        <Form layout="horizontal">
+                        <Form layout="horizontal" >
                             <Form.Item label="账号" {...formItemLayout}>
                                 {getFieldDecorator("account", {
                                     initialValue: account,

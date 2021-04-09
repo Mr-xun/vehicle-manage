@@ -1,6 +1,6 @@
 import React, { PureComponent as Component } from 'react'
 import api from "../../api/index";
-import { Card, Table, message, Spin, Divider, Button, Input, } from "antd";
+import { Card, Table, message, Divider, Button, Input, } from "antd";
 import EditUser from './components/EditUser'
 import './index.scss'
 const { Column } = Table;
@@ -41,21 +41,23 @@ export default class User extends Component {
     componentDidMount() {
         this.getTableData()
     }
-    usernameChange = ({ target: { value } }) => {
+    searchIptChange = ({ target: { name,value } }) => {
         this.setState({
-            flUserName: value,
-        })
-    };
-    cellphoneChange = ({ target: { value } }) => {
-        this.setState({
-            flCellPhone: value,
+            [name]: value,
         })
     };
     search() {
         this.getTableData()
     }
-    handleTableChange = () => {
-        this.getTableData()
+    handleTableChange = (pagination) => {
+        const pager = { ...this.state.pagination };
+        pager.current = pagination.current;
+        this.setState({
+            pagination: pager,
+        }, () => {
+            this.getTableData()
+
+        });
     };
     getTableData() {
         let { flUserName, flCellPhone, pagination: { current, pageSize } } = this.state;
@@ -70,15 +72,20 @@ export default class User extends Component {
         });
         api.getUserList(params).then(res => {
             let { data, code, msg } = res.data;
+            const pagination = { ...this.state.pagination };
             if (code === 200) {
-                let pagination = this.state.pagination
                 pagination.total = data.total
                 this.setState({
                     tableData: data.list,
                     pagination
                 });
             } else {
+                pagination.total = 0
                 message.warning(msg);
+                this.setState({
+                    tableData:[],
+                    pagination
+                });
             }
             this.setState({
                 loading: false
@@ -103,10 +110,10 @@ export default class User extends Component {
             <div className="main-container user-container">
                 <Card>
                     <div className="search-wrapper">
-                        <Input placeholder="姓名" value={flUserName}
-                            onChange={this.usernameChange} className='filter-item search-item' />
-                        <Input placeholder="电话" value={flCellPhone}
-                            onChange={this.cellphoneChange} className='filter-item search-item' />
+                        <Input placeholder="姓名" name='flUserName' value={flUserName}
+                            onChange={this.searchIptChange}  className='filter-item search-item' />
+                        <Input placeholder="电话"  name='flCellPhone' value={flCellPhone}
+                            onChange={this.searchIptChange}  className='filter-item search-item' />
                         <Button type="primary" onClick={this.search} className='filter-item '>
                             查询
                         </Button>
@@ -114,7 +121,7 @@ export default class User extends Component {
                             新增
                         </Button>
                     </div>
-                    <Table loading={loading} pagination={pagination} dataSource={tableData} onChange={this.handleTableChange}>
+                    <Table loading={loading} pagination={pagination} dataSource={tableData} onChange={this.handleTableChange} rowKey={record=>record.userId}>
                         <Column
                             title="头像"
                             dataIndex="headPortrait"

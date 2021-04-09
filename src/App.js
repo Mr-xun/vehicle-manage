@@ -3,9 +3,8 @@ import "./App.scss";
 import zhCN from "antd/es/locale/zh_CN";
 import { ConfigProvider } from "antd";
 import Layout from "./Layout";
-import Index from "./pages/Index";
 import Login from "./pages/Login";
-
+import "./styles/index.scss";
 import {
     BrowserRouter as Router,
     Route,
@@ -18,10 +17,8 @@ const App = () => {
             <ConfigProvider locale={zhCN}>
                 <Router>
                     <Switch>
-                        <Route exact path="/index" component={Index}></Route>
                         <Route exact path="/login" component={Login}></Route>
-
-                        <Redirect exact path="/" to="/index"></Redirect>
+                        <Redirect exact path="/" to="/user"></Redirect>
                         <Route component={Layout} />
                     </Switch>
                 </Router>

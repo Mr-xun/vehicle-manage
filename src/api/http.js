@@ -31,7 +31,7 @@ instance.interceptors.request.use(
     config => {
         if (getToken()) {
             config.headers['Authorization'] =
-                getTokenType() + getToken();
+                getTokenType() +' '+ getToken();
         }
         return config;
     },

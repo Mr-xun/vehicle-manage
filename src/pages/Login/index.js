@@ -38,6 +38,7 @@ class Login extends Component {
                         message.success('登录成功')
                         db.save('ACCESS_TOKEN', data.accessToken);
                         db.save('TOKEN_TYPE', data.tokenType);
+                        db.save('USER', data.user);
                     } else {
                         message.error(msg)
                     }
@@ -72,51 +73,58 @@ class Login extends Component {
     render() {
         const formItemLayout = {
             labelCol: { span: 4 },
-            wrapperCol: { span: 14 }
+            wrapperCol: { span: 20 }
         };
         const { getFieldDecorator, getFieldsError } = this.props.form;
         const { captchaImg } = this.state
         return (
             <div className='login-container'>
-                <Form layout="horizontal" onSubmit={this.handleSubmit}>
-                    <Form.Item label="用户名" {...formItemLayout}>
-                        {getFieldDecorator("account", {
-                            rules: [
-                                {
-                                    required: true,
-                                    message: "请输入用户名!"
-                                }
-                            ]
-                        })(<Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder='用户名' />)}
-                    </Form.Item>
-                    <Form.Item label="密码" {...formItemLayout}>
-                        {getFieldDecorator("password", {
-                            rules: [
-                                {
-                                    required: true,
-                                    message: "请输入密码!"
-                                }
-                            ]
-                        })(<Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder='密码' />)}
-                    </Form.Item>
-                    <Form.Item label="验证码"  {...formItemLayout}>
-                        <Row gutter={8}>
-                            <Col span={12}>
-                                {getFieldDecorator('verificationCode', {
-                                    rules: [{ required: true, message: '请输入验证码' }],
-                                })(<Input />)}
-                            </Col>
-                            <Col span={12}>
-                                <img className='captch-img' src={captchaImg} alt='' onClick={this.getCaptchImg} />
-                            </Col>
-                        </Row>
-                    </Form.Item>
-                    <Form.Item  {...formItemLayout}>
-                        <Button type="primary" htmlType="submit" disabled={hasErrors(getFieldsError())}>
-                            登录
+                <div className='login-wrapper'>
+                    <div className='login-title'>管理系统</div>
+                    <div className='login-form'>
+                        <Form layout="horizontal" onSubmit={this.handleSubmit}>
+                            <Form.Item label="用户名" {...formItemLayout}>
+                                {getFieldDecorator("account", {
+                                    rules: [
+                                        {
+                                            required: true,
+                                            message: "请输入用户名!"
+                                        }
+                                    ]
+                                })(<Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder='用户名' />)}
+                            </Form.Item>
+                            <Form.Item label="密码" {...formItemLayout}>
+                                {getFieldDecorator("password", {
+                                    rules: [
+                                        {
+                                            required: true,
+                                            message: "请输入密码!"
+                                        }
+                                    ]
+                                })(<Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder='密码' />)}
+                            </Form.Item>
+                            <Form.Item label="验证码"  {...formItemLayout}>
+                                <Row gutter={8}>
+                                    <Col span={12}>
+                                        {getFieldDecorator('verificationCode', {
+                                            rules: [{ required: true, message: '请输入验证码' }],
+                                        })(<Input />)}
+                                    </Col>
+                                    <Col span={12}>
+                                        <img className='captch-img' src={captchaImg} alt='' onClick={this.getCaptchImg} />
+                                    </Col>
+                                </Row>
+                            </Form.Item>
+                            <Form.Item  {...formItemLayout}>
+                                <Button type="primary" htmlType="submit" disabled={hasErrors(getFieldsError())}>
+                                    登录
                         </Button>
-                    </Form.Item>
-                </Form>
+                            </Form.Item>
+                        </Form>
+
+                    </div>
+
+                </div>
             </div>
         );
     }

@@ -19,6 +19,10 @@ export default {
         //用户登录
         return request.post(_CURRENT_PATH_ + "/car/user/login",params);
     },
+    userLogout(params){
+        //用户退出
+        return request.get(_CURRENT_PATH_ + "/car/user/logout");
+    },
     getUserList(params){
         //用户管理-用户列表
         return request.post(_CURRENT_PATH_ + "/car/user/page/list",params);
@@ -35,7 +39,22 @@ export default {
         //用户管理-删除用户
         return request.post(_CURRENT_PATH_ + "/car/user/delete",params);
     },
-    
+    getBicycleList(params){
+        //车辆管理-车辆列表
+        return request.post(_CURRENT_PATH_ + "/car/machine/list/get",params);
+    },
+    addBicycle(params){
+        //车辆管理-新增车辆
+        return request.post(_CURRENT_PATH_ + "/car/machine/create",params);
+    },
+    updateBicycle(params){
+        //车辆管理-修改车辆
+        return request.post(_CURRENT_PATH_ + "/car/machine/modify",params);
+    },
+    deleteBicycle(params){
+        //车辆管理-删除车辆
+        return request.post(_CURRENT_PATH_ + "/car/machine/delete",params);
+    },
     getDynamicWaterInfo() {
         //获取动态水质信息
         return request.get(_CURRENT_PATH_ + "/water/getDynamicWaterInfo");

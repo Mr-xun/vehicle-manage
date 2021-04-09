@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { Component } from "react";
 import {
     BrowserRouter as Router,
@@ -12,9 +13,12 @@ import Service from "../pages/Service";
 import Bicycle from "../pages/Bicycle";
 import Student from "../pages/Student";
 import NotFound from "../pages/NotFound";
+import db from '../utils/localstorage'
+import api from "../api/index";
 
-import { Layout, Menu, Icon } from "antd";
+import { Layout, Menu, Dropdown, Icon, message } from "antd";
 const { Header, Sider, Content } = Layout;
+
 export default class ContentWrap extends Component {
     constructor(props) {
         super(props);
@@ -27,13 +31,45 @@ export default class ContentWrap extends Component {
             defaultKeys: getRootPath()
         });
     }
+    logout() {
+        api.userLogout().then(res => {
+            let { code, msg } = res.data;
+            if (code === 200) {
+                this.props.history.push("/login")
+                message.success('退出成功')
+                db.clear();
+            } else {
+                message.error(msg)
+            }
+        });
+    }
     render() {
         let { defaultKeys } = this.state;
+        let { username = '', roleName = '', cellphone = '' } = db.get('USER')
+        const menu = (
+            <Menu className='user-info'>
+                <Menu.Item >
+                    <Icon type="user" />{roleName}
+                </Menu.Item>
+                <Menu.Item >
+                    <Icon type="phone" />{cellphone}
+                </Menu.Item>
+                <Menu.Item onClick={this.logout}>
+                    <Icon type="logout" />
+                    退出登录
+                </Menu.Item>
+            </Menu>
+        );
         return (
             <Layout className="wrapper">
-                <Header>
+                <Header className='flex-between-center'>
                     <div className="head-logo"></div>
                     <h1 className="head-title"></h1>
+                    <Dropdown overlay={menu}>
+                        <a className="ant-dropdown-link user-name" onClick={e => e.preventDefault()}>
+                            {username}<Icon type="down" />
+                        </a>
+                    </Dropdown>
                 </Header>
                 <Layout>
                     <Router>

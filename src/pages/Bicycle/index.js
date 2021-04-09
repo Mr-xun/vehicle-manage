@@ -1,42 +1,36 @@
 import React, { PureComponent as Component } from 'react'
 import api from "../../api/index";
-import { Card, Table, message, Spin, Divider, Button, Input, } from "antd";
-import EditUser from './components/EditUser'
+import { Card, Table, message, Divider, Button, Input, } from "antd";
+import EditBicycle from './components/EditBicycle'
+import './index.scss'
 const { Column } = Table;
-
 export default class User extends Component {
     constructor() {
         super()
         this.state = {
-            tableData: [
-                {
-                    name: 'test',
-                    id: 1,
-                    type: '自行车',
-                    status: '正常',
-                    remark: '备注',
-                    buyTime:'2020-08-12'
-                }, {
-                    name: 'test2',
-                    id: 2,
-                    type: '自行车',
-                    status: '正常',
-                    remark: '备注',
-                    buyTime:'2020-08-12'
-                }
-            ],
+            tableData: [],
+            editInfo: {},
             loading: false,
             modalVisible: false,
+            masterName: '',
+            masterCellphone: '',
+            pagination: {
+                total: 0,
+                current: 1,
+                pageSize: 10,
+            },
         }
+        this.search = this.search.bind(this)
         this.openModal = this.openModal.bind(this);
         this.cancelModal = this.cancelModal.bind(this);
-        this.search = this.search.bind(this)
+        this.getTableData = this.getTableData.bind(this);
     }
-    openModal(type, title) {
+    openModal(type, title, editInfo = {}) {
         this.setState({
             modalVisible: true,
             type,
-            title
+            title,
+            editInfo
         });
     }
     cancelModal() {
@@ -44,27 +38,53 @@ export default class User extends Component {
             modalVisible: false
         });
     }
+    componentDidMount() {
+        this.getTableData()
+    }
+    searchIptChange = ({ target: { name, value } }) => {
+        this.setState({
+            [name]: value,
+        })
+    };
     search() {
         this.getTableData()
     }
+    handleTableChange = (pagination) => {
+        const pager = { ...this.state.pagination };
+        pager.current = pagination.current;
+        this.setState({
+            pagination: pager,
+        }, () => {
+            this.getTableData()
+
+        });
+    };
     getTableData() {
-        let params = {};
+        let { masterName, masterCellphone, pagination: { current, pageSize } } = this.state;
+        let params = {
+            pageNum: current,
+            pageSize: pageSize,
+        };
+        if (masterName) params.masterName = masterName
+        if (masterCellphone) params.masterCellphone = masterCellphone
         this.setState({
             loading: true
         });
-        api.getWaterHisTableData(params).then(res => {
-            let { data, code } = res.data;
-            if (code === 0) {
-                data.forEach((item, index) => {
-                    item.key = index;
-                });
+        api.getBicycleList(params).then(res => {
+            let { data, code, msg } = res.data;
+            const pagination = { ...this.state.pagination };
+            if (code === 200) {
+                pagination.total = data.total
                 this.setState({
-                    tableData: data
+                    tableData: data.list,
+                    pagination
                 });
             } else {
-                message.warning(res.data.message);
+                pagination.total = 0
+                message.warning(msg);
                 this.setState({
-                    tableData: []
+                    tableData: [],
+                    pagination
                 });
             }
             this.setState({
@@ -72,107 +92,120 @@ export default class User extends Component {
             });
         });
     }
-    delRecord({ curTime }) {
-        let params = { cur_time: curTime };
-        api.delWaterRecord(params).then(res => {
-            let { code } = res.data;
-            if (code === 0) {
-                message.success("剔除成功");
+    delBicycle({ machineId }) {
+        let params = { machineId };
+        api.deleteBicycle(params).then(res => {
+            let { code, msg } = res.data;
+            if (code === 200) {
+                message.success("删除成功");
+                this.getTableData()
             } else {
-                message.warning(res.data.message);
+                message.error(msg);
             }
-            this.getTableData();
         });
     }
+    flMachineType(type) {
+        const map = {
+            1: '摩托车',
+            2: '电动车',
+            3: '自行车',
+        }
+        return <span>{map[type] || ''}</span>
+    }
+    flColorType(type) {
+        const map = {
+            1: '红色',
+            2: '黑色',
+            3: '白色',
+            4: '蓝色',
+            5: '绿色',
+        }
+        return <span>{map[type] || ''}</span>
+    }
     render() {
-        let { loading, tableData, type, title,  modalVisible } = this.state;
+        let { loading, tableData, type, title, editInfo, modalVisible, masterName, masterCellphone, pagination } = this.state;
         return (
-            <div className="main-container user-container">
+            <div className="main-container ">
                 <Card>
                     <div className="search-wrapper">
-                        <Input placeholder="单车号" className='filter-item search-item' />
-                        <Input placeholder="单车名称" className='filter-item search-item' />
+                        <Input placeholder="车主姓名" name='masterName' value={masterName}
+                            onChange={this.searchIptChange} className='filter-item search-item' />
+                        <Input placeholder="车主电话" name='masterCellphone' value={masterCellphone}
+                            onChange={this.searchIptChange} className='filter-item search-item' />
                         <Button type="primary" onClick={this.search} className='filter-item '>
                             查询
                         </Button>
-                        <Button type="primary" onClick={this.openModal} className='filter-item '>
+                        <Button type="primary" onClick={() => { this.openModal('add', '新增用户') }} className='filter-item '>
                             新增
                         </Button>
                     </div>
-                    <Spin spinning={loading}>
-                        <Table pagination={true} dataSource={tableData}>
-                            <Column
-                                title="图片"
-                                dataIndex="image"
-                                key="image"
-                            />
-                            <Column
-                                title="单车号"
-                                dataIndex="id"
-                                key="id"
-                                align='center'
-                            />
-                            <Column title="单车名" dataIndex="name" key="name" align='center' />
-                            <Column
-                                title="单车类型"
-                                dataIndex="type"
-                                key="type"
-                                align='center'
-                            />
-                            <Column
-                                title="购入时间"
-                                dataIndex="buyTime"
-                                key="buyTime"
-                                align='center'
-                            />
-                            <Column
-                                title="目前状态"
-                                dataIndex="status"
-                                key="status"
-                                align='center'
-                            />
-                            <Column
-                                title="备注"
-                                dataIndex="remark"
-                                key="remark"
-                                align='center'
-                            />
-                            <Column
-                                title="操作"
-                                key="action"
-                                align='center'
-                                render={(text, record) => (
-                                    <span>
-                                        <Button
-                                            size="small"
-                                            type="link"
-                                            onClick={() => {
-                                                this.delRecord(record);
-                                            }}
-                                        >
-                                            删除
+                    <Table loading={loading} pagination={pagination} dataSource={tableData} onChange={this.handleTableChange} rowKey={record => record.userId}>
+                        <Column
+                            title="图片"
+                            dataIndex="picture"
+                            key="picture"
+                            render={(url) => (
+                                <img className='avatar' src={url} alt='' />
+                            )}
+                        />
+                        <Column
+                            title="车牌号"
+                            dataIndex="carNumber"
+                            key="carNumber"
+                            align='center'
+                        />
+                        <Column title="车主姓名" dataIndex="masterName" key="masterName" align='center' />
+                        <Column
+                            title="车主电话"
+                            dataIndex="masterCellphone"
+                            key="masterCellphone"
+                            align='center'
+                        />
+                        <Column title="车辆类型" dataIndex="machineType" key="machineType" align='center' render={(type) =>
+                            this.flMachineType(type)
+                        } />
+                        <Column title="车辆颜色" dataIndex="colorType" key="colorType" align='center'
+                            render={(type) =>
+                                this.flColorType(type)
+                            } />
+                        <Column title="录入日期" dataIndex="entryTime" key="entryTime" align='center' />
+                        <Column
+                            title="操作"
+                            key="action"
+                            align='center'
+                            render={(text, info) => (
+                                <span>
+                                    <Button
+                                        size="small"
+                                        type="link"
+                                        onClick={() => {
+                                            this.delBicycle(info);
+                                        }}
+                                    >
+                                        删除
                                     </Button>
-                                        <Divider type="vertical" />
-                                        <Button
-                                            size="small"
-                                            type="link"
-                                            onClick={() => {
-                                                this.openModal(record);
-                                            }}
-                                        >
-                                            编辑
+                                    <Divider type="vertical" />
+                                    <Button
+                                        size="small"
+                                        type="link"
+                                        onClick={() => {
+                                            this.openModal('edit', '编辑用户', info);
+                                        }}
+                                    >
+                                        编辑
                                     </Button>
-                                    </span>
-                                )}
-                            />
-                        </Table>
-                    </Spin>
+                                </span>
+                            )}
+                        />
+                    </Table>
 
                 </Card>
-                <EditUser
+                <EditBicycle
                     type={type}
+                    editInfo={editInfo}
                     title={title}
                     visible={modalVisible}
+                    onSuccess={this.getTableData}
                     onClose={this.cancelModal}
                 />
             </div>

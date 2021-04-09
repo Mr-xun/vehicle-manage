@@ -1,49 +1,56 @@
 @mixin display_flex {
-	display: -webkit-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
 }
 
 @mixin flex_wrap {
-	flex-wrap: wrap;
-	-webkit-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-flex-wrap: wrap;
+}
+
+@mixin flex_direction {
+  flex-direction: column;
 }
 
 @mixin justify_content_between {
-	-webkit-justify-content: space-between;
-    justify-content: space-between;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
 }
 
 @mixin justify_content_end {
-	justify-content: flex-end;
-	-webkit-justify-content: flex-end;
+  justify-content: flex-end;
+  -webkit-justify-content: flex-end;
 }
+
 @mixin justify_content_center {
   -webkit-justify-content: center;
   justify-content: center;
 }
+
 @mixin justify_content_around {
   -webkit-justify-content: space-around;
   justify-content: space-around;
 }
 
 @mixin align_items_center {
-	align-items: center;
-	-webkit-align-items: center;
+  align-items: center;
+  -webkit-align-items: center;
 }
 
 @mixin flex_wrap {
-	flex-wrap: wrap;
-	-webkit-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-flex-wrap: wrap;
 }
 
 @mixin flex1 {
-    -webkit-box-flex: 1;
-    -moz-box-flex: 1;
-    -webkit-flex: 1;
-    flex: 1;
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  -webkit-flex: 1;
+  flex: 1;
 }
+
 @mixin clearfix {
   &:after {
     content: "";
@@ -109,4 +116,63 @@
     border-top: $transparent-border-style;
     border-bottom: $transparent-border-style;
   }
+}
+
+// flex class
+.flex-left {
+  @include display_flex;
+}
+
+.flex-col {
+  @include display_flex;
+  @include flex_direction
+}
+
+// 全部居中
+.flex-all-center {
+  @include display_flex;
+  @include justify_content_center;
+  @include align_items_center;
+}
+
+// 垂直居中
+.flex-cross-center {
+  @include display_flex;
+  @include align_items_center;
+}
+
+// 垂直均匀分部
+.flex-around {
+  @include display_flex;
+  @include justify_content_around;
+  @include align_items_center;
+
+}
+
+// 左右靠边平均分布
+.flex-between {
+  @include display_flex;
+  @include justify_content_between;
+}
+
+// 左右靠边平均分布并且纵向剧中
+.flex-between-center {
+  @include display_flex;
+  @include justify_content_between;
+  @include align_items_center;
+}
+
+// 向后分布
+.flex-end {
+  @include display_flex;
+  @include justify_content_end;
+}
+
+// flex换行
+.flex-wrap {
+  @include flex_wrap;
+}
+
+.flex1 {
+  @include flex1;
 }
