@@ -4,8 +4,7 @@ import {
     message
 } from 'antd';
 import db from '../utils/localstorage'
-let baseURL = process.env.NODE_ENV === 'development' ? '/api' : 'http://39.106.109.80:8080'
-console.log(process, 999)
+let baseURL = '/api'
 let instance = axios.create({
     baseURL,
     withCredentials: true,//携带cookie
@@ -68,6 +67,9 @@ instance.interceptors.response.use(
                     db.clear();
                     const { origin } = window.location
                     window.location.href = origin + '/login'
+                    break;
+                case 400:
+                    message.error('您的请求参数有误！');
                     break;
                 case 500:
                     message.error('服务异常');
