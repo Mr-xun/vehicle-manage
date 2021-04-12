@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { Modal, message, Form, DatePicker, Input, Radio } from "antd";
-import "./index.scss";
+import { Modal, message, Form, Input, Radio } from "antd";
 import api from "../../../../api/index";
 import moment from "moment";
 class Edit extends Component {
@@ -10,7 +9,7 @@ class Edit extends Component {
             visible: false,
         };
         this.handleCancel = this.handleCancel.bind(this);
-    }    
+    }
     //提交
     handleSubmit = e => {
         let { form, type, onSuccess, editInfo } = this.props;
@@ -37,7 +36,7 @@ class Edit extends Component {
                 }
             });
         });
-    };    
+    };
     //取消
     handleCancel() {
         let { form } = this.props;

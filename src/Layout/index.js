@@ -6,24 +6,29 @@ import {
     NavLink,
     Switch
 } from "react-router-dom";
+import {connect} from 'react-redux'
 import "./index.scss";
 import { getRootPath } from "../utils";
 import User from "../pages/User";
 import Service from "../pages/Service";
 import Bicycle from "../pages/Bicycle";
 import Student from "../pages/Student";
-import NotFound from "../pages/NotFound";
+import NotFound from '../pages/NotFound/index'
 import db from '../utils/localstorage'
 import api from "../api/index";
 
 import { Layout, Menu, Dropdown, Icon, message } from "antd";
 const { Header, Sider, Content } = Layout;
-
-export default class ContentWrap extends Component {
+const mapStateToProps = (state)=>{
+    return {
+        user:state.userInfo.user
+    }
+}
+ class ContentWrap extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            defaultKeys: "/history"
+            defaultKeys: "/user"
         };
         this.logout = this.logout.bind(this)
     }
@@ -33,7 +38,7 @@ export default class ContentWrap extends Component {
         });
     }
     componentDidMount() {
-        let { username = '', roleName = '', cellphone = '' } = db.get('USER')
+        let { username = '', roleName = '', cellphone = '' } = this.props.user
         this.setState({
             username,
             roleName,
@@ -73,7 +78,7 @@ export default class ContentWrap extends Component {
             <Layout className="wrapper">
                 <Header className='flex-between-center'>
                     <div className="head-logo"></div>
-                    <h1 className="head-title"></h1>
+                    <h1 className="head-title">高校车辆管理</h1>
                     <Dropdown overlay={menu}>
                         <a className="ant-dropdown-link user-name" onClick={e => e.preventDefault()}>
                             {username}<Icon type="down" />
@@ -145,3 +150,4 @@ export default class ContentWrap extends Component {
         );
     }
 }
+export default connect(mapStateToProps,null)(ContentWrap)

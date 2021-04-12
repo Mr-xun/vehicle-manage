@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Modal, message, Form, Input, Radio } from "antd";
-import "./index.scss";
 import api from "../../../../api/index";
 class Edit extends Component {
     constructor() {
@@ -10,7 +9,7 @@ class Edit extends Component {
             value: ""
         };
         this.handleCancel = this.handleCancel.bind(this);
-    }    
+    }
     //提交
     handleSubmit = e => {
         let { form, type, onSuccess, editInfo } = this.props;
@@ -35,7 +34,7 @@ class Edit extends Component {
                 }
             });
         });
-    };    
+    };
     //取消
     handleCancel() {
         let { form } = this.props;
@@ -68,7 +67,7 @@ class Edit extends Component {
                                             message: "请输入车主姓名!"
                                         }
                                     ]
-                                })(<Input placeholder='车主姓名'/>)}
+                                })(<Input placeholder='车主姓名' />)}
                             </Form.Item>
                             <Form.Item label="车主编号" {...formItemLayout}>
                                 {getFieldDecorator("studentCode", {
@@ -92,6 +91,20 @@ class Edit extends Component {
                                     ]
                                 })(<Input placeholder='电话' />)}
                             </Form.Item>
+                            <Form.Item label="性别" {...formItemLayout}>
+                                {getFieldDecorator("gender", {
+                                    initialValue: gender,
+                                    rules: [
+                                        {
+                                            required: true,
+                                            message: "请选择性别!"
+                                        }
+                                    ]
+                                })(<Radio.Group >
+                                    <Radio value={1}>男</Radio>
+                                    <Radio value={2}>女</Radio>
+                                </Radio.Group>)}
+                            </Form.Item>
                             <Form.Item label="院系" {...formItemLayout}>
                                 {getFieldDecorator("department", {
                                     initialValue: department,
@@ -113,20 +126,6 @@ class Edit extends Component {
                                         }
                                     ]
                                 })(<Input placeholder='班级' />)}
-                            </Form.Item>
-                            <Form.Item label="性别" {...formItemLayout}>
-                                {getFieldDecorator("gender", {
-                                    initialValue: gender,
-                                    rules: [
-                                        {
-                                            required: true,
-                                            message: "请选择性别!"
-                                        }
-                                    ]
-                                })(<Radio.Group >
-                                    <Radio value={true}>男</Radio>
-                                    <Radio value={false}>女</Radio>
-                                </Radio.Group>)}
                             </Form.Item>
                         </Form>
                     </div>

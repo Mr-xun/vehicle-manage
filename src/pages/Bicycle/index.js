@@ -2,7 +2,6 @@ import React, { PureComponent as Component } from 'react'
 import api from "../../api/index";
 import { Card, Table, message, Divider, Button, Input, } from "antd";
 import Edit from './components/Edit'
-import './index.scss'
 const { Column } = Table;
 export default class User extends Component {
     constructor() {
@@ -141,7 +140,7 @@ export default class User extends Component {
                         <Button type="primary" onClick={this.search} className='filter-item '>
                             查询
                         </Button>
-                        <Button type="primary" onClick={() => { this.openEditModal('add', '新增用户') }} className='filter-item '>
+                        <Button type="primary" onClick={() => { this.openEditModal('add', '新增车辆') }} className='filter-item '>
                             新增
                         </Button>
                     </div>
@@ -195,7 +194,7 @@ export default class User extends Component {
                                         size="small"
                                         type="link"
                                         onClick={() => {
-                                            this.openEditModal('edit', '编辑用户', info);
+                                            this.openEditModal('edit', '编辑车辆', info);
                                         }}
                                     >
                                         编辑

@@ -2,7 +2,6 @@ import React, { PureComponent as Component } from 'react'
 import api from "../../api/index";
 import { Card, Table, message, Divider, Button, Input, } from "antd";
 import Edit from './components/Edit'
-import './index.scss'
 const { Column } = Table;
 export default class User extends Component {
     constructor() {
@@ -12,8 +11,8 @@ export default class User extends Component {
             editInfo: {},
             loading: false,
             modalVisible: false,
-            flUserName: '',
-            flCellPhone: '',
+            studentName: '',
+            cellphone: '',
             pagination: {
                 total: 0,
                 current: 1,
@@ -35,7 +34,7 @@ export default class User extends Component {
         });
     }
     //关闭编辑弹层
-    cancelEditModal(){
+    cancelEditModal() {
         this.setState({
             modalVisible: false
         });
@@ -66,13 +65,13 @@ export default class User extends Component {
     };
     //获取table数据
     getTableData() {
-        let { flUserName, flCellPhone, pagination: { current, pageSize } } = this.state;
+        let { studentName, cellphone, pagination: { current, pageSize } } = this.state;
         let params = {
             pageNum: current,
             pageSize: pageSize,
         };
-        if (flUserName) params.username = flUserName
-        if (flCellPhone) params.cellphone = flCellPhone
+        if (studentName) params.studentName = studentName
+        if (cellphone) params.cellphone = cellphone
         this.setState({
             loading: true
         });
@@ -99,8 +98,8 @@ export default class User extends Component {
         });
     }
     //删除
-    delStudent({ userId }) {
-        let params = { userId };
+    delStudent({ studentId }) {
+        let params = { studentId };
         api.deleteStudent(params).then(res => {
             let { code, msg } = res.data;
             if (code === 200) {
@@ -124,34 +123,17 @@ export default class User extends Component {
                         <Button type="primary" onClick={this.search} className='filter-item '>
                             查询
                         </Button>
-                        <Button type="primary" onClick={() => { this.openEditModal('add', '新增用户') }} className='filter-item '>
+                        <Button type="primary" onClick={() => { this.openEditModal('add', '新增车主') }} className='filter-item '>
                             新增
                         </Button>
                     </div>
                     <Table loading={loading} pagination={pagination} dataSource={tableData} onChange={this.handleTableChange} rowKey={record => record.userId}>
-                        <Column
-                            title="头像"
-                            dataIndex="headPortrait"
-                            key="headPortrait"
-                            render={(url) => (
-                                <img className='avatar' src={url} alt='' />
-                            )}
-                        />
-                        <Column
-                            title="用户ID"
-                            dataIndex="userId"
-                            key="userId"
-                            align='center'
-                        />
-                        <Column title="姓名" dataIndex="username" key="username" align='center' />
-                        <Column
-                            title="电话"
-                            dataIndex="cellphone"
-                            key="cellphone"
-                            align='center'
-                        />
-                        <Column title="角色" dataIndex="roleName" key="roleName" align='center' />
-                        <Column title="上次登录时间" dataIndex="recentLoginTime" key="recentLoginTime" align='center' />
+                        <Column title="车主姓名" dataIndex="studentName" key="studentName" align='center' />
+                        <Column title="车主电话" dataIndex="cellphone" key="cellphone" align='center' />
+                        <Column title="车辆编号" dataIndex="carNumber" key="carNumber" align='center' />
+                        <Column title="性别" dataIndex="genderName" key="genderName" align='center' />
+                        <Column title="院系" dataIndex="department" key="department" align='center' />
+                        <Column title="班级" dataIndex="studentGrade" key="studentGrade" align='center' />
                         <Column
                             title="操作"
                             key="action"
@@ -172,7 +154,7 @@ export default class User extends Component {
                                         size="small"
                                         type="link"
                                         onClick={() => {
-                                            this.openEditModal('edit', '编辑用户', editInfo);
+                                            this.openEditModal('edit', '编辑车主', editInfo);
                                         }}
                                     >
                                         编辑

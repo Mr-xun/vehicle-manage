@@ -2,14 +2,23 @@ import React, { PureComponent as Component } from 'react'
 import {
     Form, Input, message, Icon, Button, Row, Col,
 } from 'antd';
-
-
+import { connect } from "react-redux"
 import "./index.scss";
 import api from "../../api/index";
 import axios from 'axios';
 import db from '../../utils/localstorage'
 function hasErrors(fieldsError) {
     return Object.keys(fieldsError).some(field => fieldsError[field]);
+}
+const mapDispatchToProps = (dispatch) => {
+    return {
+        setUser: (data) => {
+            dispatch({
+                type: 'USER',
+                data
+            })
+        }
+    }
 }
 class Login extends Component {
     constructor() {
@@ -23,7 +32,7 @@ class Login extends Component {
     }
     componentDidMount() {
         this.getCaptchImg()
-    }    
+    }
     //提交
     handleSubmit = e => {
         e.preventDefault();
@@ -40,6 +49,7 @@ class Login extends Component {
                         db.save('ACCESS_TOKEN', data.accessToken);
                         db.save('TOKEN_TYPE', data.tokenType);
                         db.save('USER', data.user);
+                        this.props.setUser(data)
                     } else {
                         message.error(msg)
                     }
@@ -131,4 +141,4 @@ class Login extends Component {
     }
 }
 Login = Form.create({ name: "validate" })(Login);
-export default Login;
+export default connect(null, mapDispatchToProps)(Login);
