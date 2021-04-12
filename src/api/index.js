@@ -71,4 +71,20 @@ export default {
         //车主管理-删除车主
         return request.post("/car/student/delete", params);
     },
+    getServiceList(params) {
+        //服务点管理-服务点列表
+        return request.post("/car/point/list/get", params);
+    },
+    addService(params) {
+        //服务点管理-新增服务点
+        return request.post("/car/point/create", params);
+    },
+    updateService(params) {
+        //服务点管理-修改服务点
+        return request.post("/car/point/modify", params);
+    },
+    deleteService(params) {
+        //服务点管理-删除服务点
+        return request.post("/car/point/delete", params);
+    },
 };

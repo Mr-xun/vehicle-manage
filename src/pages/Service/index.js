@@ -1,72 +1,95 @@
 import React, { PureComponent as Component } from 'react'
 import api from "../../api/index";
-import { Card, Table, message, Spin, Divider, Button, Input, } from "antd";
-import EditUser from './components/EditUser'
+import { Card, Table, message, Divider, Button, Input, } from "antd";
+import Edit from './components/Edit'
 const { Column } = Table;
-
 export default class User extends Component {
     constructor() {
         super()
         this.state = {
-            tableData: [
-                {
-                    name: 'test',
-                    serviceId: 1001,
-                    tel: 17810204418,
-                    remark: '备注',
-                    address:'test地址'
-                }, {
-                    name: 'test2',
-                    serviceId: 1002,
-                    tel: 17810204418,
-                    remark: '备注',
-                    address:'test1地址'
-                }
-            ],
+            tableData: [],
+            editInfo: {},
             loading: false,
             modalVisible: false,
+            pointName: '',
+            pointPhone: '',
+            pagination: {
+                total: 0,
+                current: 1,
+                pageSize: 10,
+            },
         }
+        this.search = this.search.bind(this)
         this.openEditModal = this.openEditModal.bind(this);
         this.cancelEditModal = this.cancelEditModal.bind(this);
-        this.search = this.search.bind(this)
+        this.getTableData = this.getTableData.bind(this);
     }
     //打开编辑弹层
-    openEditModal(type, title) {
+    openEditModal(type, title, editInfo = {}) {
         this.setState({
             modalVisible: true,
             type,
-            title
+            title,
+            editInfo
         });
     }
     //关闭编辑弹层
-    cancelEditModal(){
+    cancelEditModal() {
         this.setState({
             modalVisible: false
         });
     }
+    componentDidMount() {
+        this.getTableData()
+    }
+    //更改查询条件
+    searchIptChange = ({ target: { name, value } }) => {
+        this.setState({
+            [name]: value,
+        })
+    };
     //查询
     search() {
         this.getTableData()
     }
+    //更改分页
+    handleTableChange = (pagination) => {
+        const pager = { ...this.state.pagination };
+        pager.current = pagination.current;
+        this.setState({
+            pagination: pager,
+        }, () => {
+            this.getTableData()
+
+        });
+    };
     //获取table数据
     getTableData() {
-        let params = {};
+        let { pointName, pointPhone, pagination: { current, pageSize } } = this.state;
+        let params = {
+            pageNum: current,
+            pageSize: pageSize,
+        };
+        if (pointName) params.pointName = pointName
+        if (pointPhone) params.pointPhone = pointPhone
         this.setState({
             loading: true
         });
-        api.getWaterHisTableData(params).then(res => {
-            let { data, code } = res.data;
-            if (code === 0) {
-                data.forEach((item, index) => {
-                    item.key = index;
-                });
+        api.getServiceList(params).then(res => {
+            let { data, code, msg } = res.data;
+            const pagination = { ...this.state.pagination };
+            if (code === 200) {
+                pagination.total = data.total
                 this.setState({
-                    tableData: data
+                    tableData: data.list,
+                    pagination
                 });
             } else {
-                message.warning(res.data.message);
+                pagination.total = 0
+                message.warning(msg);
                 this.setState({
-                    tableData: []
+                    tableData: [],
+                    pagination
                 });
             }
             this.setState({
@@ -74,96 +97,79 @@ export default class User extends Component {
             });
         });
     }
-    delRecord({ curTime }) {
-        let params = { cur_time: curTime };
-        api.delWaterRecord(params).then(res => {
-            let { code } = res.data;
-            if (code === 0) {
-                message.success("剔除成功");
+    //删除
+    delService({ pointId }) {
+        let params = { pointId };
+        api.deleteService(params).then(res => {
+            let { code, msg } = res.data;
+            if (code === 200) {
+                message.success("删除成功");
+                this.getTableData()
             } else {
-                message.warning(res.data.message);
+                message.error(msg);
             }
-            this.getTableData();
         });
     }
     render() {
-        let { loading, tableData, type, title,  modalVisible } = this.state;
+        let { loading, tableData, type, title, editInfo, modalVisible, pointName, pointPhone, pagination } = this.state;
         return (
             <div className="main-container user-container">
                 <Card>
                     <div className="search-wrapper">
-                        <Input placeholder="服务点名称" className='filter-item search-item' />
-                        <Input placeholder="服务电话" className='filter-item search-item' />
+                        <Input placeholder="服务点名称" name='pointName' value={pointName}
+                            onChange={this.searchIptChange} className='filter-item search-item' />
+                        <Input placeholder="服务点电话" name='pointPhone' value={pointPhone}
+                            onChange={this.searchIptChange} className='filter-item search-item' />
                         <Button type="primary" onClick={this.search} className='filter-item '>
                             查询
                         </Button>
-                        <Button type="primary" onClick={this.openEditModal} className='filter-item '>
+                        <Button type="primary" onClick={() => { this.openEditModal('add', '新增服务点') }} className='filter-item '>
                             新增
                         </Button>
                     </div>
-                    <Spin spinning={loading}>
-                        <Table pagination={true} dataSource={tableData}>
-                            <Column
-                                title="服务点ID"
-                                dataIndex="serviceId"
-                                key="avatar"
-                                align='center'
-                            />
-                            <Column
-                                title="服务点名称"
-                                dataIndex="name"
-                                key="name"
-                                align='center'
-                            />
-                            <Column title="地址" dataIndex="address" key="address" align='center' />
-                            <Column
-                                title="服务电话"
-                                dataIndex="tel"
-                                key="tel"
-                                align='center'
-                            />
-                            <Column
-                                title="备注"
-                                dataIndex="remark"
-                                key="remark"
-                                align='center'
-                            />
-                            <Column
-                                title="操作"
-                                key="action"
-                                align='center'
-                                render={(text, record) => (
-                                    <span>
-                                        <Button
-                                            size="small"
-                                            type="link"
-                                            onClick={() => {
-                                                this.delRecord(record);
-                                            }}
-                                        >
-                                            删除
+                    <Table loading={loading} pagination={pagination} dataSource={tableData} onChange={this.handleTableChange} rowKey={record => record.studentId}>
+                        <Column title="服务点ID" dataIndex="pointId" key="pointId" align='center' />
+                        <Column title="服务点名称" dataIndex="pointName" key="pointName" align='center' />
+                        <Column title="服务点地址" dataIndex="pointAddress" key="pointAddress" align='center' />
+                        <Column title="服务点电话" dataIndex="pointPhone" key="pointPhone" align='center' />
+                        <Column title="备注" dataIndex="note" key="note" align='center' />
+                        <Column
+                            title="操作"
+                            key="action"
+                            align='center'
+                            render={(text, editInfo) => (
+                                <span>
+                                    <Button
+                                        size="small"
+                                        type="link"
+                                        onClick={() => {
+                                            this.delService(editInfo);
+                                        }}
+                                    >
+                                        删除
                                     </Button>
-                                        <Divider type="vertical" />
-                                        <Button
-                                            size="small"
-                                            type="link"
-                                            onClick={() => {
-                                                this.openEditModal(record);
-                                            }}
-                                        >
-                                            编辑
+                                    <Divider type="vertical" />
+                                    <Button
+                                        size="small"
+                                        type="link"
+                                        onClick={() => {
+                                            this.openEditModal('edit', '编辑服务点', editInfo);
+                                        }}
+                                    >
+                                        编辑
                                     </Button>
-                                    </span>
-                                )}
-                            />
-                        </Table>
-                    </Spin>
+                                </span>
+                            )}
+                        />
+                    </Table>
 
                 </Card>
-                <EditUser
+                <Edit
                     type={type}
+                    editInfo={editInfo}
                     title={title}
                     visible={modalVisible}
+                    onSuccess={this.getTableData}
                     onClose={this.cancelEditModal}
                 />
             </div>
