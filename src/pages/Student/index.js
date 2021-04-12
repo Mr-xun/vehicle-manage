@@ -127,7 +127,7 @@ export default class User extends Component {
                             新增
                         </Button>
                     </div>
-                    <Table loading={loading} pagination={pagination} dataSource={tableData} onChange={this.handleTableChange} rowKey={record => record.userId}>
+                    <Table loading={loading} pagination={pagination} dataSource={tableData} onChange={this.handleTableChange} rowKey={record => record.studentId}>
                         <Column title="车主姓名" dataIndex="studentName" key="studentName" align='center' />
                         <Column title="车主电话" dataIndex="cellphone" key="cellphone" align='center' />
                         <Column title="车辆编号" dataIndex="carNumber" key="carNumber" align='center' />

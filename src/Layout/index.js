@@ -6,7 +6,7 @@ import {
     NavLink,
     Switch
 } from "react-router-dom";
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 import "./index.scss";
 import { getRootPath } from "../utils";
 import User from "../pages/User";
@@ -19,12 +19,12 @@ import api from "../api/index";
 
 import { Layout, Menu, Dropdown, Icon, message } from "antd";
 const { Header, Sider, Content } = Layout;
-const mapStateToProps = (state)=>{
+const mapStateToProps = (state) => {
     return {
-        user:state.userInfo.user
+        user: state.userInfo.user
     }
 }
- class ContentWrap extends Component {
+class ContentWrap extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -35,14 +35,6 @@ const mapStateToProps = (state)=>{
     componentWillMount() {
         this.setState({
             defaultKeys: getRootPath()
-        });
-    }
-    componentDidMount() {
-        let { username = '', roleName = '', cellphone = '' } = this.props.user
-        this.setState({
-            username,
-            roleName,
-            cellphone,
         });
     }
     logout() {
@@ -57,9 +49,8 @@ const mapStateToProps = (state)=>{
         });
     }
     render() {
-        let { defaultKeys, username,
-            roleName,
-            cellphone } = this.state;
+        let { defaultKeys } = this.state;
+        let { username = '', roleName = '', cellphone = '' } = this.props.user
         const menu = (
             <Menu className='user-info'>
                 <Menu.Item >
@@ -150,4 +141,4 @@ const mapStateToProps = (state)=>{
         );
     }
 }
-export default connect(mapStateToProps,null)(ContentWrap)
+export default connect(mapStateToProps, null)(ContentWrap)

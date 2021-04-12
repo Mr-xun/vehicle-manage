@@ -132,6 +132,7 @@ export default class User extends Component {
                             title="头像"
                             dataIndex="headPortrait"
                             key="headPortrait"
+                            align='center'
                             render={(url) => (
                                 <img className='avatar' src={url} alt='' />
                             )}

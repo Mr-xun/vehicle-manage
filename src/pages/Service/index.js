@@ -104,12 +104,13 @@ export default class User extends Component {
                     <Spin spinning={loading}>
                         <Table pagination={true} dataSource={tableData}>
                             <Column
-                                title="服务店ID"
+                                title="服务点ID"
                                 dataIndex="serviceId"
                                 key="avatar"
+                                align='center'
                             />
                             <Column
-                                title="服务店名称"
+                                title="服务点名称"
                                 dataIndex="name"
                                 key="name"
                                 align='center'
