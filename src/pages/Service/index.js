@@ -26,25 +26,29 @@ export default class User extends Component {
             loading: false,
             modalVisible: false,
         }
-        this.openModal = this.openModal.bind(this);
-        this.cancelModal = this.cancelModal.bind(this);
+        this.openEditModal = this.openEditModal.bind(this);
+        this.cancelEditModal = this.cancelEditModal.bind(this);
         this.search = this.search.bind(this)
     }
-    openModal(type, title) {
+    //打开编辑弹层
+    openEditModal(type, title) {
         this.setState({
             modalVisible: true,
             type,
             title
         });
     }
-    cancelModal() {
+    //关闭编辑弹层
+    cancelEditModal(){
         this.setState({
             modalVisible: false
         });
     }
+    //查询
     search() {
         this.getTableData()
     }
+    //获取table数据
     getTableData() {
         let params = {};
         this.setState({
@@ -93,7 +97,7 @@ export default class User extends Component {
                         <Button type="primary" onClick={this.search} className='filter-item '>
                             查询
                         </Button>
-                        <Button type="primary" onClick={this.openModal} className='filter-item '>
+                        <Button type="primary" onClick={this.openEditModal} className='filter-item '>
                             新增
                         </Button>
                     </div>
@@ -143,7 +147,7 @@ export default class User extends Component {
                                             size="small"
                                             type="link"
                                             onClick={() => {
-                                                this.openModal(record);
+                                                this.openEditModal(record);
                                             }}
                                         >
                                             编辑
@@ -159,7 +163,7 @@ export default class User extends Component {
                     type={type}
                     title={title}
                     visible={modalVisible}
-                    onClose={this.cancelModal}
+                    onClose={this.cancelEditModal}
                 />
             </div>
         )

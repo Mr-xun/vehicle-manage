@@ -144,6 +144,7 @@ export default class BottomEchart extends Component {
             }
         });
     }
+    //查询
     search() {
         this.getEveryEchartValue();
     }

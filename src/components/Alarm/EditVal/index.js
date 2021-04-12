@@ -10,8 +10,9 @@ class EditMostVal extends Component {
             value: ""
         };
         this.handleCancel = this.handleCancel.bind(this);
-    }
-    handleOk = e => {
+    }    
+    //提交
+    handleSubmit = e => {
         let { form, type, refreshData } = this.props;
         form.validateFields((err, fieldsValue) => {
             if (err) return;
@@ -30,7 +31,8 @@ class EditMostVal extends Component {
             });
         });
     };
-
+    
+    //取消
     handleCancel() {
         this.props.onClose();
     }
@@ -47,7 +49,7 @@ class EditMostVal extends Component {
                 <Modal
                     title={title}
                     visible={visible}
-                    onOk={this.handleOk}
+                    onOk={this.handleSubmit}
                     onCancel={this.handleCancel}
                 >
                     <div>

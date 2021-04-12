@@ -23,7 +23,8 @@ class Login extends Component {
     }
     componentDidMount() {
         this.getCaptchImg()
-    }
+    }    
+    //提交
     handleSubmit = e => {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
@@ -80,7 +81,7 @@ class Login extends Component {
         return (
             <div className='login-container'>
                 <div className='login-wrapper'>
-                    <div className='login-title'>管理系统</div>
+                    <div className='login-title'>高校车辆管理</div>
                     <div className='login-form'>
                         <Form layout="horizontal" onSubmit={this.handleSubmit}>
                             <Form.Item label="用户名" {...formItemLayout}>

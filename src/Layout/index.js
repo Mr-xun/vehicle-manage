@@ -109,7 +109,7 @@ export default class ContentWrap extends Component {
                                 <Menu.Item key="/student">
                                     <NavLink exact to="/student">
                                         <Icon type="contacts" />
-                                        学生管理
+                                        车主管理
                                     </NavLink>
                                 </Menu.Item>
                             </Menu>

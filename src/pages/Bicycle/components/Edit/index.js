@@ -3,15 +3,16 @@ import { Modal, message, Form, DatePicker, Input, Radio } from "antd";
 import "./index.scss";
 import api from "../../../../api/index";
 import moment from "moment";
-class EditUser extends Component {
+class Edit extends Component {
     constructor() {
         super();
         this.state = {
             visible: false,
         };
         this.handleCancel = this.handleCancel.bind(this);
-    }
-    handleOk = e => {
+    }    
+    //提交
+    handleSubmit = e => {
         let { form, type, onSuccess, editInfo } = this.props;
         form.validateFields((err, values) => {
             if (err) return;
@@ -36,11 +37,8 @@ class EditUser extends Component {
                 }
             });
         });
-    };
-    isDisable() {
-        let { type } = this.props;
-        return type === 'edit' ? true : false
-    }
+    };    
+    //取消
     handleCancel() {
         let { form } = this.props;
         this.props.onClose();
@@ -58,7 +56,7 @@ class EditUser extends Component {
                 <Modal
                     title={title}
                     visible={visible}
-                    onOk={this.handleOk}
+                    onOk={this.handleSubmit}
                     onCancel={this.handleCancel}
                 >
                     <div>
@@ -136,5 +134,5 @@ class EditUser extends Component {
         );
     }
 }
-EditUser = Form.create({ name: "validate" })(EditUser);
-export default EditUser;
+Edit = Form.create({ name: "validate" })(Edit);
+export default Edit;

@@ -55,4 +55,20 @@ export default {
         //车辆管理-删除车辆
         return request.post("/car/machine/delete", params);
     },
+    getStudentList(params) {
+        //车主管理-车主列表
+        return request.post("/car/student/page/list", params);
+    },
+    addStudent(params) {
+        //车主管理-新增车主
+        return request.post("/car/student/create", params);
+    },
+    updateStudent(params) {
+        //车主管理-修改车主
+        return request.post("/car/student/modify", params);
+    },
+    deleteStudent(params) {
+        //车主管理-删除车主
+        return request.post("/car/student/delete", params);
+    },
 };

@@ -18,8 +18,8 @@ export default class WarnMostValue extends Component {
                 temperature_flag: true
             }
         };
-        this.openModal = this.openModal.bind(this);
-        this.cancelModal = this.cancelModal.bind(this);
+        this.openEditModal = this.openEditModal.bind(this);
+        this.cancelEditModal = this.cancelEditModal.bind(this);
         this.getCurrentVal = this.getCurrentVal.bind(this);
     }
     getCurrentVal() {
@@ -42,14 +42,16 @@ export default class WarnMostValue extends Component {
             });
         });
     }
-    openModal(type, title) {
+    //打开编辑弹层
+    openEditModal(type, title) {
         this.setState({
             modal_visible: true,
             type,
             title
         });
     }
-    cancelModal() {
+    //关闭编辑弹层
+    cancelEditModal(){
         this.setState({
             modal_visible: false
         });
@@ -124,7 +126,7 @@ export default class WarnMostValue extends Component {
                                             shape="round"
                                             icon="edit"
                                             onClick={() =>
-                                                this.openModal(
+                                                this.openEditModal(
                                                     "temperature",
                                                     "修改水温阈值"
                                                 )
@@ -159,7 +161,7 @@ export default class WarnMostValue extends Component {
                                             shape="round"
                                             icon="edit"
                                             onClick={() =>
-                                                this.openModal(
+                                                this.openEditModal(
                                                     "pressure",
                                                     "修改水压阈值"
                                                 )
@@ -194,7 +196,7 @@ export default class WarnMostValue extends Component {
                                             shape="round"
                                             icon="edit"
                                             onClick={() =>
-                                                this.openModal(
+                                                this.openEditModal(
                                                     "ph",
                                                     "修改PH值阈值"
                                                 )
@@ -213,7 +215,7 @@ export default class WarnMostValue extends Component {
                     title={title}
                     valObj={valueObj}
                     visible={modal_visible}
-                    onClose={this.cancelModal}
+                    onClose={this.cancelEditModal}
                     refreshData={this.getCurrentVal}
                 />
             </div>

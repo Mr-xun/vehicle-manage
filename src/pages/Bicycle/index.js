@@ -1,7 +1,7 @@
 import React, { PureComponent as Component } from 'react'
 import api from "../../api/index";
 import { Card, Table, message, Divider, Button, Input, } from "antd";
-import EditBicycle from './components/EditBicycle'
+import Edit from './components/Edit'
 import './index.scss'
 const { Column } = Table;
 export default class User extends Component {
@@ -21,11 +21,12 @@ export default class User extends Component {
             },
         }
         this.search = this.search.bind(this)
-        this.openModal = this.openModal.bind(this);
-        this.cancelModal = this.cancelModal.bind(this);
+        this.openEditModal = this.openEditModal.bind(this);
+        this.cancelEditModal = this.cancelEditModal.bind(this);
         this.getTableData = this.getTableData.bind(this);
     }
-    openModal(type, title, editInfo = {}) {
+    //打开编辑弹层
+    openEditModal(type, title, editInfo = {}) {
         this.setState({
             modalVisible: true,
             type,
@@ -33,7 +34,8 @@ export default class User extends Component {
             editInfo
         });
     }
-    cancelModal() {
+    //关闭编辑弹层
+    cancelEditModal(){
         this.setState({
             modalVisible: false
         });
@@ -41,14 +43,17 @@ export default class User extends Component {
     componentDidMount() {
         this.getTableData()
     }
+    //更改查询条件
     searchIptChange = ({ target: { name, value } }) => {
         this.setState({
             [name]: value,
         })
     };
+    //查询
     search() {
         this.getTableData()
     }
+    //更改分页
     handleTableChange = (pagination) => {
         const pager = { ...this.state.pagination };
         pager.current = pagination.current;
@@ -59,6 +64,7 @@ export default class User extends Component {
 
         });
     };
+    //获取table数据
     getTableData() {
         let { masterName, masterCellphone, pagination: { current, pageSize } } = this.state;
         let params = {
@@ -135,7 +141,7 @@ export default class User extends Component {
                         <Button type="primary" onClick={this.search} className='filter-item '>
                             查询
                         </Button>
-                        <Button type="primary" onClick={() => { this.openModal('add', '新增用户') }} className='filter-item '>
+                        <Button type="primary" onClick={() => { this.openEditModal('add', '新增用户') }} className='filter-item '>
                             新增
                         </Button>
                     </div>
@@ -189,7 +195,7 @@ export default class User extends Component {
                                         size="small"
                                         type="link"
                                         onClick={() => {
-                                            this.openModal('edit', '编辑用户', info);
+                                            this.openEditModal('edit', '编辑用户', info);
                                         }}
                                     >
                                         编辑
@@ -200,13 +206,13 @@ export default class User extends Component {
                     </Table>
 
                 </Card>
-                <EditBicycle
+                <Edit
                     type={type}
                     editInfo={editInfo}
                     title={title}
                     visible={modalVisible}
                     onSuccess={this.getTableData}
-                    onClose={this.cancelModal}
+                    onClose={this.cancelEditModal}
                 />
             </div>
         )

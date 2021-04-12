@@ -30,6 +30,7 @@ export default class Record extends Component {
             end_time: dateString[1]
         });
     }
+    //查询
     search() {
         this.getRecord();
         this.refs.echart.getHisEchartData();

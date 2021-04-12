@@ -10,8 +10,9 @@ class EditUser extends Component {
             value: ""
         };
         this.handleCancel = this.handleCancel.bind(this);
-    }
-    handleOk = e => {
+    }    
+    //提交
+    handleSubmit = e => {
         let { form, type, getTableData } = this.props;
         form.validateFields((err, fieldsValue) => {
             if (err) return;
@@ -30,7 +31,8 @@ class EditUser extends Component {
             });
         });
     };
-
+    
+    //取消
     handleCancel() {
         this.props.onClose();
     }
@@ -46,7 +48,7 @@ class EditUser extends Component {
                 <Modal
                     title={title}
                     visible={visible}
-                    onOk={this.handleOk}
+                    onOk={this.handleSubmit}
                     onCancel={this.handleCancel}
                 >
                     <div>

@@ -25,6 +25,7 @@ export default class History extends Component {
             timeArr: dateString
         });
     }
+    //查询
     search() {
         this.refs.table.getHisData();
         this.refs.echart.getHisEchartData();
