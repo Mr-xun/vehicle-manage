@@ -131,6 +131,8 @@ export default class User extends Component {
                         <Column title="服务点ID" dataIndex="pointId" key="pointId" align='center' />
                         <Column title="服务点名称" dataIndex="pointName" key="pointName" align='center' />
                         <Column title="服务点地址" dataIndex="pointAddress" key="pointAddress" align='center' />
+                        <Column title="可停放数量" dataIndex="totalSize" key="totalSize" align='center' />
+                        <Column title="已停放数量" dataIndex="currentSize" key="currentSize" align='center' />
                         <Column title="服务点电话" dataIndex="pointPhone" key="pointPhone" align='center' />
                         <Column title="备注" dataIndex="note" key="note" align='center' />
                         <Column

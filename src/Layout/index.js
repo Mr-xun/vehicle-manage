@@ -13,6 +13,7 @@ import User from "../pages/User";
 import Service from "../pages/Service";
 import Bicycle from "../pages/Bicycle";
 import Student from "../pages/Student";
+import ContactUs from "../pages/ContactUs";
 import NotFound from '../pages/NotFound/index'
 import db from '../utils/localstorage'
 import api from "../api/index";
@@ -93,7 +94,7 @@ class ContentWrap extends Component {
                                 <Menu.Item key="/bicycle">
                                     <NavLink exact to="/bicycle">
                                         <Icon type="car" />
-                                        单车管理
+                                        车辆管理
                                     </NavLink>
                                 </Menu.Item>
                                 <Menu.Item key="/servcie">
@@ -106,6 +107,12 @@ class ContentWrap extends Component {
                                     <NavLink exact to="/student">
                                         <Icon type="contacts" />
                                         车主管理
+                                    </NavLink>
+                                </Menu.Item>
+                                <Menu.Item key="/contact-us">
+                                    <NavLink exact to="/contact-us">
+                                        <Icon type="aliwangwang" />
+                                        联系我们
                                     </NavLink>
                                 </Menu.Item>
                             </Menu>
@@ -131,6 +138,11 @@ class ContentWrap extends Component {
                                     exact
                                     path="/student"
                                     component={Student}
+                                ></Route>
+                                 <Route
+                                    exact
+                                    path="/contact-us"
+                                    component={ContactUs}
                                 ></Route>
                                 <Route component={NotFound} />
                             </Switch>

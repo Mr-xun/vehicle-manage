@@ -42,7 +42,7 @@ class Edit extends Component {
         form.resetFields()
     }
     render() {
-        let { visible, title, editInfo: { pointName = '', pointAddress = '', note = '', pointPhone = '' } } = this.props;
+        let { visible, title, editInfo: { pointName = '', pointAddress = '', note = '', pointPhone = '', totalSize = '', currentSize = '' } } = this.props;
         const formItemLayout = {
             labelCol: { span: 6 },
             wrapperCol: { span: 14 }

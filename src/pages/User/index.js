@@ -35,7 +35,7 @@ export default class User extends Component {
         });
     }
     //关闭编辑弹层
-    cancelEditModal(){
+    cancelEditModal() {
         this.setState({
             modalVisible: false
         });
@@ -44,7 +44,7 @@ export default class User extends Component {
         this.getTableData()
     }
     //更改查询条件
-    searchIptChange = ({ target: { name,value } }) => {
+    searchIptChange = ({ target: { name, value } }) => {
         this.setState({
             [name]: value,
         })
@@ -89,7 +89,7 @@ export default class User extends Component {
                 pagination.total = 0
                 message.warning(msg);
                 this.setState({
-                    tableData:[],
+                    tableData: [],
                     pagination
                 });
             }
@@ -117,9 +117,9 @@ export default class User extends Component {
                 <Card>
                     <div className="search-wrapper">
                         <Input placeholder="姓名" name='flUserName' value={flUserName}
-                            onChange={this.searchIptChange}  className='filter-item search-item' />
-                        <Input placeholder="电话"  name='flCellPhone' value={flCellPhone}
-                            onChange={this.searchIptChange}  className='filter-item search-item' />
+                            onChange={this.searchIptChange} className='filter-item search-item' />
+                        <Input placeholder="电话" name='flCellPhone' value={flCellPhone}
+                            onChange={this.searchIptChange} className='filter-item search-item' />
                         <Button type="primary" onClick={this.search} className='filter-item '>
                             查询
                         </Button>
@@ -127,7 +127,7 @@ export default class User extends Component {
                             新增
                         </Button>
                     </div>
-                    <Table loading={loading} pagination={pagination} dataSource={tableData} onChange={this.handleTableChange} rowKey={record=>record.userId}>
+                    <Table loading={loading} pagination={pagination} dataSource={tableData} onChange={this.handleTableChange} rowKey={record => record.userId}>
                         <Column
                             title="头像"
                             dataIndex="headPortrait"
@@ -151,7 +151,11 @@ export default class User extends Component {
                             align='center'
                         />
                         <Column title="角色" dataIndex="roleName" key="roleName" align='center' />
-                        <Column title="上次登录时间" dataIndex="recentLoginTime" key="recentLoginTime" align='center' />
+                        <Column title="上次登录时间" dataIndex="recentLoginTime" key="recentLoginTime" align='center' render={(text) => (
+                            <span>
+                                {text || '未登录'}
+                            </span>
+                        )} />
                         <Column
                             title="操作"
                             key="action"
