@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { Modal, message, Form, Input } from "antd";
+import { Modal, message, Form, Input, Select } from "antd";
 import api from "../../../../api/index";
+const { Option } = Select;
 class Edit extends Component {
     constructor() {
         super();
@@ -70,15 +71,21 @@ class Edit extends Component {
                                 })(<Input placeholder='服务点名称' />)}
                             </Form.Item>
                             <Form.Item label="服务点地址" {...formItemLayout}>
-                                {getFieldDecorator("pointAddress", {
+                                {getFieldDecorator('pointAddress', {
                                     initialValue: pointAddress,
                                     rules: [
-                                        {
-                                            required: true,
-                                            message: "请输入服务点地址!"
-                                        }
-                                    ]
-                                })(<Input placeholder='服务点地址' />)}
+                                        { required: true, message: '请选择服务点地址' },
+                                    ],
+                                })(
+                                    <Select placeholder="请选择服务点地址">
+                                        <Option value="西大门">西大门</Option>
+                                        <Option value="东大门">东大门</Option>
+                                        <Option value="教学楼">教学楼</Option>
+                                        <Option value="图书馆">图书馆</Option>
+                                        <Option value="食堂">食堂</Option>
+                                        <Option value="宿舍楼">宿舍楼</Option>
+                                    </Select>
+                                )}
                             </Form.Item>
                             <Form.Item label="服务点电话" {...formItemLayout}>
                                 {getFieldDecorator("pointPhone", {

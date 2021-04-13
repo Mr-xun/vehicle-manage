@@ -24,6 +24,7 @@ export default class User extends Component {
         this.cancelEditModal = this.cancelEditModal.bind(this);
         this.getTableData = this.getTableData.bind(this);
     }
+
     //打开编辑弹层
     openEditModal(type, title, editInfo = {}) {
         this.setState({
@@ -34,7 +35,7 @@ export default class User extends Component {
         });
     }
     //关闭编辑弹层
-    cancelEditModal(){
+    cancelEditModal() {
         this.setState({
             modalVisible: false
         });
@@ -174,6 +175,7 @@ export default class User extends Component {
                             render={(type) =>
                                 this.flColorType(type)
                             } />
+                        <Column title="所属服务点ID" dataIndex="pointId" key="pointId" align='center' />
                         <Column title="录入日期" dataIndex="entryTime" key="entryTime" align='center' />
                         <Column
                             title="操作"

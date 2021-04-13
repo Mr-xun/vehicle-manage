@@ -1,14 +1,38 @@
 import React, { Component } from "react";
-import { Modal, message, Form, Input, Radio } from "antd";
+import { Modal, message, Form, Input, Select, Radio } from "antd";
 import api from "../../../../api/index";
 import moment from "moment";
+const { Option } = Select
 class Edit extends Component {
     constructor() {
         super();
         this.state = {
             visible: false,
+            serviceData: []
         };
         this.handleCancel = this.handleCancel.bind(this);
+    }
+    componentDidMount() {
+        this.getServiceData()
+    }
+    //获取服务点数据
+    getServiceData() {
+        let params = {
+            pageNum: 1,
+            pageSize: 999,
+        };
+        api.getServiceList(params).then(res => {
+            let { data, code, } = res.data;
+            if (code === 200) {
+                this.setState({
+                    serviceData: data.list,
+                });
+            } else {
+                this.setState({
+                    serviceData: [],
+                });
+            }
+        });
     }
     //提交
     handleSubmit = e => {
@@ -44,10 +68,11 @@ class Edit extends Component {
         form.resetFields()
     }
     render() {
-        let { visible, title, editInfo: { masterName = '', masterCellphone = '', carNumber = '', machineType = "", colorType = '', note = '', } } = this.props;
+        let { visible, title, editInfo: { masterName = '', masterCellphone = '', carNumber = '', machineType = "", colorType = '', pointId = '', note = '', } } = this.props;
+        let { serviceData } = this.state
         const formItemLayout = {
-            labelCol: { span: 4 },
-            wrapperCol: { span: 18 }
+            labelCol: { span: 6 },
+            wrapperCol: { span: 16 }
         };
         const { getFieldDecorator } = this.props.form;
         return (
@@ -117,10 +142,24 @@ class Edit extends Component {
                                     <Radio value={3}>白色</Radio>
                                     <Radio value={4}>蓝色</Radio>
                                     <Radio value={5}>绿色</Radio>
-
                                 </Radio.Group>)}
                             </Form.Item>
-
+                            <Form.Item label="停放服务点" {...formItemLayout}>
+                                {getFieldDecorator('pointId', {
+                                    initialValue: pointId,
+                                    rules: [
+                                        { required: true, message: '请选择停放服务点' },
+                                    ],
+                                })(
+                                    <Select placeholder="请选择停放服务点">
+                                        {
+                                            serviceData.map((item, index) => {
+                                                return <Option value={item.pointId} key={index}>{item.pointName}</Option>
+                                            })
+                                        }
+                                    </Select>
+                                )}
+                            </Form.Item>
                             <Form.Item label="备注" {...formItemLayout}>
                                 {getFieldDecorator("note", {
                                     initialValue: note
