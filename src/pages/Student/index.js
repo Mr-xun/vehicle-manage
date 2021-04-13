@@ -130,7 +130,7 @@ export default class User extends Component {
                     <Table loading={loading} pagination={pagination} dataSource={tableData} onChange={this.handleTableChange} rowKey={record => record.studentId}>
                         <Column title="车主姓名" dataIndex="studentName" key="studentName" align='center' />
                         <Column title="车主电话" dataIndex="cellphone" key="cellphone" align='center' />
-                        <Column title="车辆编号" dataIndex="carNumber" key="carNumber" align='center' />
+                        <Column title="车主编号" dataIndex="studentCode" key="studentCode" align='center' />
                         <Column title="性别" dataIndex="genderName" key="genderName" align='center' />
                         <Column title="院系" dataIndex="department" key="department" align='center' />
                         <Column title="班级" dataIndex="studentGrade" key="studentGrade" align='center' />
